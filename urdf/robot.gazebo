@@ -1,6 +1,8 @@
 <?xml version="1.0" ?>
 <robot name="wrv4" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
+<xacro:arg name="four_wheel_drive" default="../config/four_wheel_diff_drive.yaml" />
+
 <gazebo reference='base_link'>
   <material>Gazebo/White</material>
 </gazebo>
@@ -15,14 +17,14 @@
 
 <gazebo reference='wheelbl_link'>
   <material>Gazebo/Yellow</material>
-  <mu1 value="0.01"/>
-  <mu2 value="0.01"/>
+  <!-- <mu1 value="0.01"/>
+  <mu2 value="0.01"/> -->
 </gazebo>
 
 <gazebo reference='wheelbr_link'>
   <material>Gazebo/Yellow</material>
-  <mu1 value="0.01"/>
-  <mu2 value="0.01"/>
+  <!-- <mu1 value="0.01"/>
+  <mu2 value="0.01"/> -->
 </gazebo>
 
 <gazebo reference='camera_link'>
@@ -105,7 +107,7 @@
       <!--<initial_orientation_as_reference>true</initial_orientation_as_reference>-->
     </plugin>
     <always_on>true</always_on>
-    <update_rate>30</update_rate>
+    <update_rate>100</update_rate>
     <visualize>true</visualize>
     <imu>
       <angular_velocity>
@@ -164,30 +166,21 @@
   </sensor>
 </gazebo>
 
-<gazebo>
+<!-- <gazebo>
   <plugin name='wrv4_diff_drive' filename='libgazebo_ros_diff_drive.so'>
-    <ros>
-      <!--<namespace>/wrv3</namespace>-->
-    </ros>
 
     <update_rate>30</update_rate>
-    <!-- wheels -->
     <left_joint>wheelfl_joint</left_joint>
-    <!-- <left_joint>wheel2l_joint</left_joint> -->
     <right_joint>wheelfr_joint</right_joint>
-    <!-- <right_joint>wheel2r_joint</right_joint> -->
 
-    <!-- kinematics -->
     <wheel_separation>0.2</wheel_separation>
     <wheel_diameter>0.1</wheel_diameter>
 
-    <!-- limits -->
     <max_wheel_torque>20</max_wheel_torque>
     <max_wheel_acceleration>1.0</max_wheel_acceleration>
 
     <command_topic>cmd_vel</command_topic>
 
-    <!-- output -->
     <publish_odom>true</publish_odom>
     <publish_odom_tf>true</publish_odom_tf>
     <publish_wheel_tf>false</publish_wheel_tf>
@@ -201,14 +194,55 @@
 <gazebo>
   <plugin name="wrv4_joint_state" filename="libgazebo_ros_joint_state_publisher.so">
     <ros>
-      <!-- <namespace>/wrv3</namespace> -->
       <remapping>~/out:=joint_states</remapping>
     </ros>
     <update_rate>30</update_rate>
     <joint_name>wheelfl_joint</joint_name>
-    <!-- <joint_name>wheel2l_joint</joint_name> -->
     <joint_name>wheelfr_joint</joint_name>
-    <!-- <joint_name>wheel2r_joint</joint_name> -->
+  </plugin>
+</gazebo> -->
+
+<ros2_control name="GazeboSystem" type='system'>
+  <hardware>
+    <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+  </hardware>
+  <joint name="wheelfl_joint">
+    <command_interface name='velocity'>
+      <param name="min">-1</param>
+      <param name="max">1</param>
+    </command_interface>
+    <state_interface name="position"/>
+    <state_interface name="velocity"/>
+  </joint>
+  <joint name="wheelfr_joint">
+    <command_interface name='velocity'>
+      <param name="min">-1</param>
+      <param name="max">1</param>
+    </command_interface>
+    <state_interface name="position"/>
+    <state_interface name="velocity"/>
+  </joint>
+  <joint name="wheelbl_joint">
+    <command_interface name='velocity'>
+      <param name="min">-1</param>
+      <param name="max">1</param>
+    </command_interface>
+    <state_interface name="position"/>
+    <state_interface name="velocity"/>
+  </joint>
+  <joint name="wheelbr_joint">
+    <command_interface name='velocity'>
+      <param name="min">-1</param>
+      <param name="max">1</param>
+    </command_interface>
+    <state_interface name="position"/>
+    <state_interface name="velocity"/>
+  </joint>
+</ros2_control>
+
+<gazebo>
+  <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
+    <parameters>$(arg four_wheel_drive)</parameters>
   </plugin>
 </gazebo>
 
