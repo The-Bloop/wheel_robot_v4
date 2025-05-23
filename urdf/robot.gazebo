@@ -243,6 +243,10 @@
 <gazebo>
   <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
     <parameters>$(arg four_wheel_drive)</parameters>
+    <ros>
+      <remapping>~/cmd_vel_unstamped:=/cmd_vel</remapping>
+      <remapping>~/odom:=/odom</remapping>
+    </ros>
   </plugin>
 </gazebo>
 

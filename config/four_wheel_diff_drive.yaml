@@ -1,13 +1,14 @@
 controller_manager:
   ros__parameters:
-    update_rate: 100
+    update_rate: 20
     use_sim_time: True
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
 
     robot_diff_drive_controller:
       type: diff_drive_controller/DiffDriveController
 
-    joint_state_broadcaster:
-      type: joint_state_broadcaster/JointStateBroadcaster
 
 robot_diff_drive_controller:
   ros__parameters:
@@ -25,39 +26,34 @@ robot_diff_drive_controller:
     publish_rate: 50.0
     odom_frame_id: odom
     base_frame_id: base_footprint
-    pose_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.01]
-    twist_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.01]
+    pose_covariance_diagonal: [0.001, 0.001, 10000.0, 10000.0, 10000.0, 0.45]
+    twist_covariance_diagonal: [0.001, 0.001, 0.001, 10000.0, 10000.0, 0.45]
 
-    position_feedback: true
-    open_loop: false
-    enable_odom_tf: false
+    position_feedback: True
+    open_loop: False
+    enable_odom_tf: False
 
     cmd_vel_timeout: 0.5 # seconds
-    # publish_limited_velocity: true
-    use_stamped_vel: false
+    # publish_limited_velocity: True
+    use_stamped_vel: False
     # velocity_rolling_window_size: 10
 
-    preserve_turning_radius: true
+    preserve_turning_radius: True
 
-    publish_cmd: true
+    # publish_cmd: True
 
-    publish_wheel_data: true
+    # publish_wheel_data: True
 
-    linear.x.has_velocity_limits: true
-    linear.x.has_acceleration_limits: true
-    linear.x.has_jerk_limits: false
-    linear.x.max_velocity: 0.26
-    linear.x.min_velocity: -0.26
-    linear.x.max_acceleration: 0.1
-    linear.x.max_jerk: 0.0
-    linear.x.min_jerk: 0.0
+    linear.x.has_velocity_limits: True
+    linear.x.has_acceleration_limits: True
+    linear.x.max_velocity: 1.0
+    linear.x.min_velocity: -1.0
+    linear.x.max_acceleration: 2.5
+    linear.x.min_acceleration: -2.5
 
-    angular.z.has_velocity_limits: true
-    angular.z.has_acceleration_limits: true
-    angular.z.has_jerk_limits: false
-    angular.z.max_velocity: 0.1
-    angular.z.min_velocity: -0.1
-    angular.z.max_acceleration: 0.02
-    angular.z.min_acceleration: -0.02
-    angular.z.max_jerk: 0.0
-    angular.z.min_jerk: 0.0
+    angular.z.has_velocity_limits: True
+    angular.z.has_acceleration_limits: True
+    angular.z.max_velocity: 1.0
+    angular.z.min_velocity: -1.0
+    angular.z.max_acceleration: 4.0
+    angular.z.min_acceleration: -4.0

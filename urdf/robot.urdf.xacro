@@ -178,25 +178,25 @@
     <child link="base_link"/>
   </joint>
   <joint name="wheelfl_joint" type="continuous">
-    <origin rpy="1.571 0 0" xyz="0.1 0.1125 -0.0375"/>
+    <origin rpy="-1.571 0 0" xyz="0.1 0.1125 -0.0375"/>
     <parent link="base_link"/>
     <child link="wheelfl_link"/>
     <axis xyz="0 0 1"/>
   </joint>
   <joint name="wheelfr_joint" type="continuous">
-    <origin rpy="1.571 0 0" xyz="0.1 -0.1125 -0.0375"/>
+    <origin rpy="-1.571 0 0" xyz="0.1 -0.1125 -0.0375"/>
     <parent link="base_link"/>
     <child link="wheelfr_link"/>
     <axis xyz="0 0 1"/>
   </joint>
   <joint name="wheelbl_joint" type="continuous">
-    <origin rpy="1.571 0 0" xyz="-0.1 0.1125 -0.0375"/>
+    <origin rpy="-1.571 0 0" xyz="-0.1 0.1125 -0.0375"/>
     <parent link="base_link"/>
     <child link="wheelbl_link"/>
     <axis xyz="0 0 1"/>
   </joint>
   <joint name="wheelbr_joint" type="continuous">
-    <origin rpy="1.571 0 0" xyz="-0.1 -0.1125 -0.0375"/>
+    <origin rpy="-1.571 0 0" xyz="-0.1 -0.1125 -0.0375"/>
     <parent link="base_link"/>
     <child link="wheelbr_link"/>
     <axis xyz="0 0 1"/>
@@ -449,6 +449,10 @@
   <gazebo>
     <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
       <parameters>$(arg four_wheel_drive)</parameters>
+      <ros>
+        <remapping>~/cmd_vel_unstamped:=/cmd_vel</remapping>
+        <remapping>~/odom:=/odom</remapping>
+      </ros>
     </plugin>
   </gazebo>
 </robot>
