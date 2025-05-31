@@ -16,7 +16,7 @@ robot_diff_drive_controller:
     right_wheel_names: ["wheelfr_joint", "wheelbr_joint"]
 
     wheel_separation: 0.20
-    wheels_per_side: 2  # actually 2, but both are controlled by 1 signal
+    wheels_per_side: 1  # actually 2, but both are controlled by 1 signal
     wheel_radius: 0.05
 
     wheel_separation_multiplier: 1.0
@@ -26,19 +26,19 @@ robot_diff_drive_controller:
     publish_rate: 50.0
     odom_frame_id: odom
     base_frame_id: base_footprint
-    pose_covariance_diagonal: [0.001, 0.001, 10000.0, 10000.0, 10000.0, 0.45]
-    twist_covariance_diagonal: [0.001, 0.001, 0.001, 10000.0, 10000.0, 0.45]
+    pose_covariance_diagonal: [0.01, 0.01, 0.01, 0.01, 0.01, 0.1]
+    twist_covariance_diagonal: [0.75, 0.75, 0.0, 0.0, 0.0, 0.5]
 
     position_feedback: True
     open_loop: False
-    enable_odom_tf: False
+    enable_odom_tf: True
 
     cmd_vel_timeout: 0.5 # seconds
     # publish_limited_velocity: True
     use_stamped_vel: False
     # velocity_rolling_window_size: 10
 
-    preserve_turning_radius: True
+    # preserve_turning_radius: True
 
     # publish_cmd: True
 
@@ -46,8 +46,8 @@ robot_diff_drive_controller:
 
     linear.x.has_velocity_limits: True
     linear.x.has_acceleration_limits: True
-    linear.x.max_velocity: 1.0
-    linear.x.min_velocity: -1.0
+    linear.x.max_velocity: 0.26
+    linear.x.min_velocity: -0.26
     linear.x.max_acceleration: 2.5
     linear.x.min_acceleration: -2.5
 

@@ -40,16 +40,27 @@ def generate_launch_description():
     #     ],
     # )
 
+    control_node = Node(
+        package="controller_manager",
+        executable="ros2_control_node",
+        parameters=[robot_controllers],
+        output="both",
+        remappings=[
+            ("~/robot_description", "/robot_description"),
+            ("/diffbot_base_controller/cmd_vel", "/cmd_vel"),
+        ],
+    )
+
     joint_state_broadcaster_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"]
+        arguments=["joint_state_broadcaster"]
     )
 
     robot_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["robot_diff_drive_controller", "--controller-manager", "/controller_manager"]
+        arguments=["robot_diff_drive_controller"]
     )
 
     ld = LaunchDescription()

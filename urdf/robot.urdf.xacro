@@ -226,19 +226,69 @@
   </gazebo>
   <gazebo reference="wheelfl_link">
     <material>Gazebo/Red</material>
+    <mu value="1.0"/>
+    <mu2 value="0.25"/>
+    <fdir1 value="1 0 0"/>
+    <slip1 value="0.0"/>
+    <slip2 value="0.0"/>
+    <soft_cfm value="0.0"/>
+    <soft_erp value="0.2"/>
+    <kp value="1e+5"/>
+    <kd value="1.0"/>
+    <max_vel value="0.01"/>
+    <min_depth value="0.001"/>
+    <use_patch_radius value="False"/>
+    <surface_radius value="0.05"/>
+    <use_patch_radius value="False"/>
+    <surface_radius value="0.05"/>
   </gazebo>
   <gazebo reference="wheelfr_link">
     <material>Gazebo/Red</material>
+    <mu value="1.0"/>
+    <mu2 value="0.25"/>
+    <fdir1 value="1 0 0"/>
+    <slip1 value="0.0"/>
+    <slip2 value="0.0"/>
+    <soft_cfm value="0.0"/>
+    <soft_erp value="0.2"/>
+    <kp value="1e+5"/>
+    <kd value="1.0"/>
+    <max_vel value="0.01"/>
+    <min_depth value="0.001"/>
+    <use_patch_radius value="False"/>
+    <surface_radius value="0.05"/>
   </gazebo>
   <gazebo reference="wheelbl_link">
     <material>Gazebo/Yellow</material>
-    <!-- <mu1 value="0.01"/>
-  <mu2 value="0.01"/> -->
+    <mu value="1.0"/>
+    <mu2 value="0.25"/>
+    <fdir1 value="1 0 0"/>
+    <slip1 value="0.0"/>
+    <slip2 value="0.0"/>
+    <soft_cfm value="0.0"/>
+    <soft_erp value="0.2"/>
+    <kp value="1e+5"/>
+    <kd value="1.0"/>
+    <max_vel value="0.01"/>
+    <min_depth value="0.001"/>
+    <use_patch_radius value="False"/>
+    <surface_radius value="0.05"/>
   </gazebo>
   <gazebo reference="wheelbr_link">
     <material>Gazebo/Yellow</material>
-    <!-- <mu1 value="0.01"/>
-  <mu2 value="0.01"/> -->
+    <mu value="1.0"/>
+    <mu2 value="0.25"/>
+    <fdir1 value="1 0 0"/>
+    <slip1 value="0.0"/>
+    <slip2 value="0.0"/>
+    <soft_cfm value="0.0"/>
+    <soft_erp value="0.2"/>
+    <kp value="1e+5"/>
+    <kd value="1.0"/>
+    <max_vel value="0.01"/>
+    <min_depth value="0.001"/>
+    <use_patch_radius value="False"/>
+    <surface_radius value="0.05"/>
   </gazebo>
   <gazebo reference="camera_link">
     <material>Gazebo/Blue</material>
@@ -374,42 +424,8 @@
       </imu>
     </sensor>
   </gazebo>
-  <!-- <gazebo>
-  <plugin name='wrv4_diff_drive' filename='libgazebo_ros_diff_drive.so'>
-
-    <update_rate>30</update_rate>
-    <left_joint>wheelfl_joint</left_joint>
-    <right_joint>wheelfr_joint</right_joint>
-
-    <wheel_separation>0.2</wheel_separation>
-    <wheel_diameter>0.1</wheel_diameter>
-
-    <max_wheel_torque>20</max_wheel_torque>
-    <max_wheel_acceleration>1.0</max_wheel_acceleration>
-
-    <command_topic>cmd_vel</command_topic>
-
-    <publish_odom>true</publish_odom>
-    <publish_odom_tf>true</publish_odom_tf>
-    <publish_wheel_tf>false</publish_wheel_tf>
-
-    <odometry_topic>odom</odometry_topic>
-    <odometry_frame>odom</odometry_frame>
-    <robot_base_frame>base_footprint</robot_base_frame>
-  </plugin>
-</gazebo>
-
-<gazebo>
-  <plugin name="wrv4_joint_state" filename="libgazebo_ros_joint_state_publisher.so">
-    <ros>
-      <remapping>~/out:=joint_states</remapping>
-    </ros>
-    <update_rate>30</update_rate>
-    <joint_name>wheelfl_joint</joint_name>
-    <joint_name>wheelfr_joint</joint_name>
-  </plugin>
-</gazebo> -->
   <ros2_control name="GazeboSystem" type="system">
+    <!-- <remapping> ~/robot_description:=/robot_description</remapping> -->
     <hardware>
       <plugin>gazebo_ros2_control/GazeboSystem</plugin>
     </hardware>
@@ -420,6 +436,7 @@
       </command_interface>
       <state_interface name="position"/>
       <state_interface name="velocity"/>
+      <!-- <state_interface name="effort" /> -->
     </joint>
     <joint name="wheelfr_joint">
       <command_interface name="velocity">
@@ -428,6 +445,7 @@
       </command_interface>
       <state_interface name="position"/>
       <state_interface name="velocity"/>
+      <!-- <state_interface name="effort" /> -->
     </joint>
     <joint name="wheelbl_joint">
       <command_interface name="velocity">
@@ -436,6 +454,7 @@
       </command_interface>
       <state_interface name="position"/>
       <state_interface name="velocity"/>
+      <!-- <state_interface name="effort" /> -->
     </joint>
     <joint name="wheelbr_joint">
       <command_interface name="velocity">
@@ -444,12 +463,14 @@
       </command_interface>
       <state_interface name="position"/>
       <state_interface name="velocity"/>
+      <!-- <state_interface name="effort" /> -->
     </joint>
   </ros2_control>
   <gazebo>
     <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
       <parameters>$(arg four_wheel_drive)</parameters>
       <ros>
+        <remapping>~/robot_description:=/robot_description</remapping>
         <remapping>~/cmd_vel_unstamped:=/cmd_vel</remapping>
         <remapping>~/odom:=/odom</remapping>
       </ros>
