@@ -13,10 +13,7 @@ jobs:
     env:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v4
-        
+    steps:        
       - name: Check for comment
         id: check_comment
         env:
