@@ -10,7 +10,6 @@ jobs:
   testing-merge:
     if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main'
     runs-on: ubuntu-22.04
-    
     env:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
@@ -20,6 +19,8 @@ jobs:
         
       - name: Check for comment
         id: check_comment
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           TRIGGER_COMMENT="tos"
           PR_NUMBER=${{ github.event.pull_request.number }}
