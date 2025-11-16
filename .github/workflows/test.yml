@@ -27,7 +27,8 @@ jobs:
           COMMENT=$(gh pr view $PR_NUMBER --json comments --jq '.comments[].body')
           echo "PR Number: $PR_NUMBER"
           echo "PR Comment: $COMMENT"
-          if [[ "$COMMENT" != *"$TRIGGER_COMMENT"* ]]; then
+          COMMENT_LOWER=$(echo "$COMMENT" | tr '[:upper:]' '[:lower:]')
+          if [[ "$COMMENT_LOWER" != *"$TRIGGER_COMMENT"* ]]; then
             echo "This PR will not be tested."
             exit 0
           else
