@@ -8,12 +8,15 @@ on:
 
 jobs:
   testing-merge:
-    env:
-        GH_TOKEN: ${{ secrets.GH_TOKEN }}
     if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main'
     runs-on: ubuntu-22.04
+    env:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
     steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        
       - name: Check for comment
         id: check_comment
         env:
