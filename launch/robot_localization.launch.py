@@ -7,7 +7,7 @@ from launch.actions import DeclareLaunchArgument
 
 def generate_launch_description():
 
-    pkg_share = FindPackageShare(package='wheel_robot_v3').find('wheel_robot_v3')
+    pkg_share = FindPackageShare(package='wheel_robot_v4').find('wheel_robot_v4')
     default_rob_loc_param_path = os.path.join(pkg_share, 'config/ekf.yaml')
 
     rlparam_path = LaunchConfiguration('rlparam_path', default='default_rob_loc_param_path')
