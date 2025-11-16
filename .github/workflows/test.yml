@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Check for comment
         id: check_comment
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           TRIGGER_COMMENT="tos"
           PR_NUMBER=${{ github.event.pull_request.number }}
