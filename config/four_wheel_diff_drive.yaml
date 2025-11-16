@@ -27,7 +27,7 @@ robot_diff_drive_controller:
     odom_frame_id: odom
     base_frame_id: base_footprint
     pose_covariance_diagonal: [0.01, 0.01, 0.01, 0.01, 0.01, 0.1]
-    twist_covariance_diagonal: [0.75, 0.75, 0.0, 0.0, 0.0, 0.5]
+    twist_covariance_diagonal: [0.01, 0.01, 0.01, 0.01, 0.01, 0.5] #[0.75, 0.75, 0.0, 0.0, 0.0, 0.5]
 
     position_feedback: True
     open_loop: False
@@ -36,7 +36,7 @@ robot_diff_drive_controller:
     cmd_vel_timeout: 0.5 # seconds
     # publish_limited_velocity: True
     use_stamped_vel: False
-    # velocity_rolling_window_size: 10
+    velocity_rolling_window_size: 10
 
     # preserve_turning_radius: True
 
