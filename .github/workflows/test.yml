@@ -8,9 +8,9 @@ on:
 
 jobs:
   testing-merge:
-    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main'
-      env:
+    env:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
+    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main'
     runs-on: ubuntu-22.04
 
     steps:
