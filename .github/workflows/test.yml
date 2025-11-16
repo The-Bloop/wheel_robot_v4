@@ -1,0 +1,29 @@
+name: Testing Merge Workflow.
+
+on:
+  pull_request:
+    branches: 
+      - main
+    types: [closed]
+
+jobs:
+  testing-merge:
+    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main'
+    runs-on: ubuntu
+
+    steps:
+      - name: Check for comment
+        id: check_comment
+        run: |
+          TRIGGER_COMMENT="tos"
+          PR_NUMBER=${{ github.event.pull_request.number }}
+          COMMENT=$(gh pr view $PR_NUMBER --json comments --jq '.comments[].body')
+          echo "PR Number: $PR_NUMBER"
+          echo "PR Comment: $COMMENT"
+          if [[ "$COMMENT" != *"$TRIGGER_COMMENT"* ]]; then
+            echo "This PR will not be tested."
+            exit 0
+          else
+            echo "This PR will be tested."
+            exit 0
+          fi
