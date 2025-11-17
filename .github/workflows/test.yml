@@ -27,7 +27,7 @@ jobs:
           TRIGGER_COMMENT="tos"
           PR_NUMBER=${{ github.event.pull_request.number }}
           COMMENT=$(gh pr view $PR_NUMBER --json comments --jq '.comments[].body')
-          echo "pr_number: $PR_NUMBER" >> $GITHUB_OUTPUT
+          echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
           echo "PR Comment: $COMMENT"
           COMMENT_LOWER=$(echo "$COMMENT" | tr '[:upper:]' '[:lower:]')
           if [[ "$COMMENT_LOWER" != *"$TRIGGER_COMMENT"* ]]; then
