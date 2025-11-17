@@ -66,3 +66,10 @@ jobs:
           git push origin main
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      
+      - name: Inform PR
+        run: |
+          gh pr ${{ github.event.number }} --body "Workflow Falied and Changes Reverted"
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
