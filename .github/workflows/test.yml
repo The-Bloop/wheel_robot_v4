@@ -1,12 +1,14 @@
 name: Testing Merge Workflow.
 
 on:
-  issue_comment:
-    types: [created]
+  pull_request:
+    branches: 
+      - main
+    types: [closed]
 
 jobs:
   testing-merge:
-    if: github.event.issue.pull_request != null && github.event.comment.user.login == github.event.issue.user.login
+    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main'
     runs-on: ubuntu-22.04
     env:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -23,15 +25,35 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           TRIGGER_COMMENT="tos"
-          COMMENT=${{ github.event.comment.body}}
+          PR_NUMBER=${{ github.event.pull_request.number }}
+          COMMENT=$(gh pr view $PR_NUMBER --json comments --jq '.comments[].body')
+          echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
           echo "PR Comment: $COMMENT"
           COMMENT_LOWER=$(echo "$COMMENT" | tr '[:upper:]' '[:lower:]')
           if [[ "$COMMENT_LOWER" != *"$TRIGGER_COMMENT"* ]]; then
             echo "This PR will not be tested."
-            echo "should_test=false" >> $GITHUB_OUTPUT
-            exit 1
+            echo "should_test=false" >> $GITHUB_OUTPUT  
           else
             echo "This PR will be tested."
             echo "should_test=true" >> $GITHUB_OUTPUT
-            exit 0
           fi
+      
+  revert_merge:
+    runs-on: ubuntu-22.04
+    needs: testing-merge
+    if: failure()
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+    
+      - name: Revert the merge commit
+        run: |
+          MERGE_COMMIT_SHA="${{ github.event.after }}"
+
+          git revert -m 1 "$MERGE_COMMIT_SHA"
+
+          git push origin HEAD
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
