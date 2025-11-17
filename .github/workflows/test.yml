@@ -30,7 +30,7 @@ jobs:
           COMMENT_LOWER=$(echo "$COMMENT" | tr '[:upper:]' '[:lower:]')
           if [[ "$COMMENT_LOWER" != *"$TRIGGER_COMMENT"* ]]; then
             echo "This PR will not be tested."
-            exit 0
+            exit 1
           else
             echo "This PR will be tested."
             exit 0
