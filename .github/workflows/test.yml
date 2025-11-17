@@ -39,7 +39,7 @@ jobs:
           fi
       
       - name: Revert merge on failure
-        if: failure() && steps.check_comment.outputs.should_test == 'false'
+        if: steps.check_comment.outputs.should_test == 'false'
         run: |
           echo "❌ Tests failed! Reverting merge..."
           
