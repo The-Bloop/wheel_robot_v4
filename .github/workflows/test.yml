@@ -4,7 +4,8 @@ on:
   pull_request:
     branches: 
       - main
-    types: [closed]
+  issue_comment:
+    types: [created]
 
 permissions:
   contents: write
@@ -12,7 +13,7 @@ permissions:
 
 jobs:
   testing-merge:
-    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main'
+    if: github.event.issue.pull_request != null && github.event.comment.user.login == github.event.issue.user.login
     runs-on: ubuntu-22.04
     env:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
