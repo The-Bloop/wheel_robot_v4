@@ -61,7 +61,7 @@ jobs:
           # MERGE_COMMIT_SHA="${{ github.event.after }}"
 
           # git revert -m 1 "$MERGE_COMMIT_SHA"
-          git revert --no-edit ${{ github.sha }}
+          git revert -m 1 --no-edit ${{ github.sha }}
 
           git push origin main
         env:
