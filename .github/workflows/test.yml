@@ -70,8 +70,8 @@ jobs:
       - name: Inform PR
         run: |
           gh pr revert ${{ github.event.number }}
-          gh pr reopen ${{ github.event.number }}
           gh pr comment ${{ github.event.number }} --body "Workflow Falied and Changes Reverted"
+          gh pr reopen ${{ github.event.number }}
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
