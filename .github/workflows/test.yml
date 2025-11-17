@@ -42,20 +42,27 @@ jobs:
       
   revert_merge:
     runs-on: ubuntu-22.04
-    needs: testing-merge
+    needs: [testing-merge]
     if: failure()
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GH_TOKEN }}
+          fetch-depth: 2
+
+      - name: Configure Git user
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
     
       - name: Revert the merge commit
         run: |
-          MERGE_COMMIT_SHA="${{ github.event.after }}"
+          # MERGE_COMMIT_SHA="${{ github.event.after }}"
 
-          git revert -m 1 "$MERGE_COMMIT_SHA"
+          # git revert -m 1 "$MERGE_COMMIT_SHA"
+          git revert --no-edit ${{ github.sha }}
 
-          git push origin HEAD
+          git push origin main
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
