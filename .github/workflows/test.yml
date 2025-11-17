@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
         
       - name: Check for comment
         id: check_comment
@@ -25,13 +27,33 @@ jobs:
           TRIGGER_COMMENT="tos"
           PR_NUMBER=${{ github.event.pull_request.number }}
           COMMENT=$(gh pr view $PR_NUMBER --json comments --jq '.comments[].body')
-          echo "PR Number: $PR_NUMBER"
+          echo "pr_number: $PR_NUMBER" >> $GITHUB_OUTPUT
           echo "PR Comment: $COMMENT"
           COMMENT_LOWER=$(echo "$COMMENT" | tr '[:upper:]' '[:lower:]')
           if [[ "$COMMENT_LOWER" != *"$TRIGGER_COMMENT"* ]]; then
             echo "This PR will not be tested."
-            exit 1
+            echo "should_test=false" >> $GITHUB_OUTPUT
           else
             echo "This PR will be tested."
-            exit 0
+            echo "should_test=true" >> $GITHUB_OUTPUT
           fi
+      
+      - name: Revert merge on failure
+        if: failure() && steps.check_comment.outputs.should_test == 'true'
+        run: |
+          echo "❌ Tests failed! Reverting merge..."
+          
+          # Configure git
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Revert the merge commit
+          MERGE_COMMIT=${{ github.event.pull_request.merge_commit_sha }}
+          git revert -m 1 $MERGE_COMMIT --no-edit
+          
+          # Push the revert
+          git push origin main
+          
+          # Comment on PR
+          gh pr comment ${{ github.event.pull_request.number }} \
+            --body "⚠️ Merge reverted due to test failures. Please fix and re-merge."
