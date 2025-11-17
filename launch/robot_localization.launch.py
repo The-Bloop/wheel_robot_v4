@@ -17,7 +17,7 @@ def generate_launch_description():
 
     logger_arg = DeclareLaunchArgument(
         name='log_level',
-        default_value="info",
+        default_value="debug",
         description='Indicates logging level of Nodes')
     
 
