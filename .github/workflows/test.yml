@@ -32,14 +32,14 @@ jobs:
           COMMENT_LOWER=$(echo "$COMMENT" | tr '[:upper:]' '[:lower:]')
           if [[ "$COMMENT_LOWER" != *"$TRIGGER_COMMENT"* ]]; then
             echo "This PR will not be tested."
-            echo "should_test=false" >> $GITHUB_OUTPUT
+            echo "should_test=false" >> $GITHUB_OUTPUT  
           else
             echo "This PR will be tested."
             echo "should_test=true" >> $GITHUB_OUTPUT
           fi
       
       - name: Revert merge on failure
-        if: failure() && steps.check_comment.outputs.should_test == 'true'
+        if: failure() && steps.check_comment.outputs.should_test == 'false'
         run: |
           echo "❌ Tests failed! Reverting merge..."
           
