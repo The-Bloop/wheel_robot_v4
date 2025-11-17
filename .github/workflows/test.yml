@@ -56,22 +56,20 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
     
-      # - name: Revert the merge commit
-      #   run: |
-      #     # MERGE_COMMIT_SHA="${{ github.event.after }}"
+      - name: Revert the merge commit
+        run: |
+          # MERGE_COMMIT_SHA="${{ github.event.after }}"
 
-      #     # git revert -m 1 "$MERGE_COMMIT_SHA"
-      #     git revert -m 1 --no-edit ${{ github.sha }}
+          # git revert -m 1 "$MERGE_COMMIT_SHA"
+          git revert -m 1 --no-edit ${{ github.sha }}
 
-      #     git push origin main
-      #   env:
-      #     GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          git push origin main
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
       
       - name: Inform PR
         run: |
-          gh pr revert ${{ github.event.number }}
           gh pr comment ${{ github.event.number }} --body "Workflow Falied and Changes Reverted"
-          gh pr reopen ${{ github.event.number }}
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
