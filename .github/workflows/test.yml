@@ -23,7 +23,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           TRIGGER_COMMENT="tos"
-          COMMENT=$(gh pr view $PR_NUMBER --json comments --jq '.comments[].body')
+          COMMENT=${{ github.event.comment.body}}
           echo "PR Comment: $COMMENT"
           COMMENT_LOWER=$(echo "$COMMENT" | tr '[:upper:]' '[:lower:]')
           if [[ "$COMMENT_LOWER" != *"$TRIGGER_COMMENT"* ]]; then
