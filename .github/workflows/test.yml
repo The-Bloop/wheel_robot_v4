@@ -44,8 +44,8 @@ jobs:
           echo "❌ Tests failed! Reverting merge..."
           
           # Configure git
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "The-Bloop"
+          git config user.email "ssabariis@gmail.com"
           
           # Revert the merge commit
           MERGE_COMMIT=${{ github.event.pull_request.merge_commit_sha }}
